@@ -4,6 +4,7 @@ project(pulseaudio_controller)
 find_package(catkin REQUIRED COMPONENTS
   rospy
   std_msgs
+  message_generation
 )
 
 ## Generate services in the 'srv' folder
