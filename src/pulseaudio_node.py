@@ -5,7 +5,6 @@ from pulseaudio_controller.msg import Item
 from pulseaudio_controller.srv import ListItems, ListItemsResponse, SetItem
 from std_srvs.srv import SetBool, SetBoolResponse
 
-
 class Controller:
     def __init__(self):
         rospy.Service(
@@ -102,6 +101,8 @@ class Controller:
         return resp
 
     def _loopback(self, req):
+        data = req.data
+        
         resp = SetBoolResponse()
         resp.success = False
 
