@@ -74,7 +74,10 @@ def set_default_sink(name):
                                shell=True,
                                stdout=subprocess.PIPE,
                                stderr=subprocess.PIPE)
-    process.communicate()
+    _, err = process.communicate()
+    if err:
+        return False
+    return True
 
 
 def set_default_source(name):
@@ -82,7 +85,10 @@ def set_default_source(name):
                                shell=True,
                                stdout=subprocess.PIPE,
                                stderr=subprocess.PIPE)
-    process.communicate()
+    _, err = process.communicate()
+    if err:
+        return False
+    return True
 
 
 def submit_module(module, mode, *args):
