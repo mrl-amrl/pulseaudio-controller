@@ -5,43 +5,46 @@ from pulseaudio_controller.msg import Item
 from pulseaudio_controller.srv import ListItems, ListItemsResponse, SetItem
 from std_srvs.srv import SetBool, SetBoolResponse
 
+
 class Controller:
     def __init__(self):
+        name = rospy.get_name()
+
         rospy.Service(
-            '/pulseaudio/allow_network',
+            '{}/allow_network'.format(name),
             SetBool,
             self._allow_network,
         )
 
         rospy.Service(
-            '/pulseaudio/loopback',
+            '{}/loopback'.format(name),
             SetBool,
             self._loopback,
         )
 
         rospy.Service(
-            '/pulseaudio/sources',
+            '{}/sources'.format(name),
             ListItems,
             self._list_sources,
         )
         rospy.Service(
-            '/pulseaudio/sinks',
+            '{}/sinks'.format(name),
             ListItems,
             self._list_sinks,
         )
 
         rospy.Service(
-            '/pulseaudio/set_sink',
+            '{}/set_sink'.format(name),
             SetItem,
             self._set_sink_item,
         )
         rospy.Service(
-            '/pulseaudio/set_source',
+            '{}/set_source'.format(name),
             SetItem,
             self._set_source_item,
         )
 
-    def _set_sink_item(self, req):        
+    def _set_sink_item(self, req):
         return pulseaudio.set_default_sink(req.name)
 
     def _set_source_item(self, req):
@@ -102,17 +105,17 @@ class Controller:
 
     def _loopback(self, req):
         data = req.data
-        
+
         resp = SetBoolResponse()
         resp.success = False
 
         if pulseaudio.submit_module(
             'module-loopback',
-            'load' if data else 'unload',            
+            'load' if data else 'unload',
         ) != 0:
             resp.message = "Couldn't load module native protocol"
             return resp
-        
+
         resp.success = True
         return resp
 

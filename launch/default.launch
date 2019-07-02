@@ -1,0 +1,5 @@
+<launch>
+    <arg name="name" default="master"/>
+    <node pkg="pulseaudio_controller" type="pulseaudio_node.py" name="$(arg name)">
+    </node>
+</launch>
